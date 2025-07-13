@@ -11,4 +11,4 @@ class AuthorAdmin(admin.ModelAdmin):
 
 @admin.register(Book)
 class BookAdmin(admin.ModelAdmin):
-    list_filter = ('title', 'author','publication_date')
+    list_filter = ('title', 'author','publication_year')
