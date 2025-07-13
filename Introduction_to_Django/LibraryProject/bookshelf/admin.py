@@ -6,9 +6,9 @@ admin.site.register(Book)
 admin.site.register(Author)
 @admin.register(Author)
 class AuthorAdmin(admin.ModelAdmin):
-    list_display =('last_name', 'first_name')
+    list_filter =('last_name', 'first_name')
     fields = ('first_name', 'last_name')
 
 @admin.register(Book)
 class BookAdmin(admin.ModelAdmin):
-    list_display = ('title', 'publication_date')
+    list_filter = ('title', 'author','publication_date')
