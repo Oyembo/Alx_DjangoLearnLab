@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import list_books
-from django.views.generic.detail import DetailView
+from django.views.generic.detail import LibraryDetailView
 from django.contrib.auth. import views as auth_views
 
 urlpatterns = [
