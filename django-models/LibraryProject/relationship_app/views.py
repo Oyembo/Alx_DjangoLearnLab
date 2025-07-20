@@ -9,7 +9,6 @@ from django.contrib.auth.decorators import permission_required
 
 # Create your views here.
 def is_admin(user):
-    """Checks if the user has the 'Admin' role."""
     if not user.is_authenticated:
         return False
     try:
@@ -18,7 +17,6 @@ def is_admin(user):
         return False
 
 def is_librarian(user):
-    """Checks if the user has the 'Librarian' role."""
     if not user.is_authenticated:
         return False
     try:
@@ -27,7 +25,6 @@ def is_librarian(user):
         return False
 
 def is_member(user):
-    """Checks if the user has the 'Member' role."""
     if not user.is_authenticated:
         return False
     try:
