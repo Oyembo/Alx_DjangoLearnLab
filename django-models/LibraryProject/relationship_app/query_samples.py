@@ -4,7 +4,7 @@ import django
 os.environ.setdefault('DJANGO_SETTING_MODULE', 'LibraryProject.settings')
 django.setup()
 
-from relationship_app.models impory Author, Book, Library, Librarian
+from relationship_app.models import Author, Book, Library, Librarian
 
 def run_queries():
     print("---Initializing and Running Queries---")
@@ -44,7 +44,7 @@ def run_queries():
 
     print("\n--- Query Results ---")
 
-    print("\n1. All books by author1:")
+    print("All books by author1:")
     author1_books = Book.objects.filter(author1)
     for book in author1:
         print(f" - {book.title}")
@@ -54,8 +54,8 @@ def run_queries():
     for book in kithaka_wamberia_books:
         print(f"  - {book.title}")
 
-    print("\n2.List all books in Library:")
-    Library=Library.objects.get(name="library_name")
+    print("List all books in Library:")
+    library = Library.objects.get(name="library_name")
     for book in library.books.all():
         print(f" -{book.title}")
 
