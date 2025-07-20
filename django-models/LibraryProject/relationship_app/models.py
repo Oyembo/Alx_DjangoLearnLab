@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.contrib.auth.decorators import permission_required
+from django.contrib.auth.decorators import permission_required, relationship_app.can_add_book, relationship_app.can_change_book, relationship_app.can_delete_book
 
 
 # Create your models here.
