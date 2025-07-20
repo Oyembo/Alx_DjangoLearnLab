@@ -1,12 +1,14 @@
 from django.shortcuts import render, redirect
-from .models import Library
-from models import Book
-from django.views.generic.detail import DetailView
-from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth import logout
-from django.contrib.auth.decorators import permission_required
-from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth import login
+from django.contrib.auth.decorators import login_required, user_passes_test, permission_required
+from django.urls import reverse_lazy
+
+from django.views.generic import DetailView, CreateView, UpdateView, DeleteView
+from django.forms import ModelForm
+
+from .models import Book, Library, Author, Librarian, UserProfile, UserRole
+
 
 # Create your views here.
 def is_admin(user):
@@ -35,46 +37,36 @@ def is_member(user):
 
 def register_view(request):
     if request.method == 'POST':
-        FORM = UserCreationForm(request.POST)
-        if form.is_valid()
-            user= form.save()
-            UserProfile.objects.create(user=user, role=UserRole.ADMIN) # Default to 'member'
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
             login(request, user)
-            return redirect('login_success')     
+            return redirect('login_success')
     else:
         form = UserCreationForm()
     return render(request, 'relationship_app/register.html', {'form': form})
 
-@login required
+@login_required
 def login_success_view(request):
-    return render(request, 'relationship_app/login.html')
+    return render(request, 'relationship_app/login_success.html')
 
-def logout_view(request):
-    return render(request, 'relationship_app/logout.html')
+def logged_out_view(request):
+    return render(request, 'relationship_app/logged_out.html')
 
 @login_required
-@user_passes_test(is_admin, login_url='/auth/login/') # Redirect to login if not admin
+@user_passes_test(is_admin, login_url='/auth/login/')
 def admin_view(request):
-    """View only accessible to users with the 'Admin' role."""
     return render(request, 'relationship_app/admin_view.html')
 
 @login_required
-@user_passes_test(is_librarian, login_url='/auth/login/') # Redirect to login if not librarian
+@user_passes_test(is_librarian, login_url='/auth/login/')
 def librarian_view(request):
-    """View only accessible to users with the 'Librarian' role."""
     return render(request, 'relationship_app/librarian_view.html')
 
 @login_required
-@user_passes_test(is_member, login_url='/auth/login/') # Redirect to login if not member
+@user_passes_test(is_member, login_url='/auth/login/')
 def member_view(request):
-    """View only accessible to users with the 'Member' role."""
     return render(request, 'relationship_app/member_view.html')
-
-def book_list(request):
-    """Retrieves all books and renders a template displaying the list"""
-    books = Book.objects.all()
-    context = {'book_list': books}
-    return render(request, relationship_app/list_books.html)
 
 class BookForm(ModelForm):
     class Meta:
@@ -105,19 +97,16 @@ class BookDeleteView(DeleteView):
     success_url = reverse_lazy('book_list')
 
 def book_list(request):
-    """Retrieves all books and renders a template displaying the list"""
     books = Book.objects.all()
     context = {'book_list': books}
     return render(request, 'relationship_app/list_books.html', context)
 
-
 class LibraryDetailView(DetailView):
-    """A class-based view for displaying details of specific Library."""
     model = Library
     template_name = 'relationship_app/library_detail.html'
 
     def get_context_data(self, **kwargs):
-        """Injects additional context data specific to the book"""
-        context = super().get_context_data(**kwargs) #Get default context data
-        library = Library.objects.get(name=library__name) #Retrieve the current book instance
-        context['average_rating'] = library.get_average_rating()
+        context = super().get_context_data(**kwargs)
+        library = self.get_object()
+        context['book_count'] = library.books.count()
+        return context
