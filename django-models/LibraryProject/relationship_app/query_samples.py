@@ -45,7 +45,7 @@ def run_queries():
     print("\n--- Query Results ---")
 
     print("\n1. All books by Kithaka Wamberia:")
-    kithaka_wamberia_books = Book.objects.filter(author__name="Kithaka Wamberia")
+    kithaka_wamberia_books = Book.objects.filter(author=author1)
     for book in kithaka_wamberia_books:
         print(f"  - {book.title}")
 
@@ -53,6 +53,13 @@ def run_queries():
     margaret_ogot_books = Book.objects.filter(author__name="Margaret Ogot")
     for book in margaret_ogot_books:
         print(f"  - {book.title}")
+    
+    print("\n1. All books by Ngugi Wa Thiong'o (using author_name variable):")
+    author_name = "Ngugi Wa Thiong'o"
+    author = Author.objects.get(name=author_name) 
+    books_by_author_variable = Book.objects.filter(author=author) 
+    for book in books_by_author_variable:
+        print(f"   - {book.title}")
 
     print("\n2. All books in MacMillan Library:")
     macmillan_library_obj = Library.objects.get(name=library_name)
