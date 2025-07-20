@@ -55,7 +55,7 @@ def run_queries():
         print(f"  - {book.title}")
 
     print("List all books in Library:")
-    library = Library.objects.get(name="library_name")
+    library = ["Library.objects.get(name="library_name")]
     for book in library.books.all():
         print(f" -{book.title}")
 
