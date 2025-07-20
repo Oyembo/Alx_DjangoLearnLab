@@ -33,13 +33,14 @@ def is_member(user):
     except UserProfile.DoesNotExist:
         return False
 
-
 def register_view(request):
     if request.method == 'POST':
         FORM = UserCreationForm(request.POST)
         if form.is_valid()
-        user= form.save()
-        login(request, user)
+            user= form.save()
+            UserProfile.objects.create(user=user, role=UserRole.ADMIN) # Default to 'member'
+            login(request, user)
+            return redirect('login_success')     
     else:
         form = UserCreationForm()
     return render(request, 'relationship_app/register.html', {'form': form})
@@ -53,19 +54,19 @@ def logout_view(request):
 
 @login_required
 @user_passes_test(is_admin, login_url='/auth/login/') # Redirect to login if not admin
-def Admin_view(request):
+def admin_view(request):
     """View only accessible to users with the 'Admin' role."""
     return render(request, 'relationship_app/admin_view.html')
 
 @login_required
 @user_passes_test(is_librarian, login_url='/auth/login/') # Redirect to login if not librarian
-def Librarian_view(request):
+def librarian_view(request):
     """View only accessible to users with the 'Librarian' role."""
     return render(request, 'relationship_app/librarian_view.html')
 
 @login_required
 @user_passes_test(is_member, login_url='/auth/login/') # Redirect to login if not member
-def Member_view(request):
+def member_view(request):
     """View only accessible to users with the 'Member' role."""
     return render(request, 'relationship_app/member_view.html')
 
