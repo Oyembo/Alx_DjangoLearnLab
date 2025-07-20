@@ -72,7 +72,7 @@ def run_queries():
         print(f"  - {book.title}")
 
     print("\n3. Librarian for MacMillan Library:")
-    macmillan_library = Library.objects.get(name="MacMillan Library")
+    macmillan_library = Librarian.objects.get(library=librarian_in_charge)
     try:
         librarian = macmillan_library.librarian_in_charge
         print(f"  - {librarian.name}")
