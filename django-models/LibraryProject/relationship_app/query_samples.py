@@ -1,13 +1,13 @@
 import os
 import django
 
-os.environ.setdefault('DJANGO_SETTING_MODULE', 'LibraryProject.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'LibraryProject.settings')
 django.setup()
 
 from relationship_app.models import Author, Book, Library, Librarian
 
 def run_queries():
-    print("---Initializing and Running Queries---")
+    print("--- Initializing and Running Queries ---")
 
     print("Creating sample data...")
 
@@ -18,13 +18,13 @@ def run_queries():
     author3, created = Author.objects.get_or_create(name="Ngugi Wa Thiong'o")
     if created: print(f"Created Author: {author3.name}")
 
-    book1, created = Book.objects.get_or_create(title="Kifo Kisimani", author=author1)
+    book1, created = Book.objects.get_or_create(title="Kifo Kisimani", author=author1, defaults={'publication_date': '1990-01-01', 'isbn': '9780000000001'})
     if created: print(f"Created Book: {book1.title}")
-    book2, created = Book.objects.get_or_create(title="The River and the Source", author=author2)
+    book2, created = Book.objects.get_or_create(title="The River and the Source", author=author2, defaults={'publication_date': '1994-01-01', 'isbn': '9780000000002'})
     if created: print(f"Created Book: {book2.title}")
-    book3, created = Book.objects.get_or_create(title="The River Between", author=author2)
+    book3, created = Book.objects.get_or_create(title="The River Between", author=author2, defaults={'publication_date': '1965-01-01', 'isbn': '9780000000003'})
     if created: print(f"Created Book: {book3.title}")
-    book4, created = Book.objects.get_or_create(title="Weep O Child", author=author3)
+    book4, created = Book.objects.get_or_create(title="Weep Not, Child", author=author3, defaults={'publication_date': '1964-01-01', 'isbn': '9780000000004'})
     if created: print(f"Created Book: {book4.title}")
 
     library1, created = Library.objects.get_or_create(name="MacMillan Library")
@@ -44,20 +44,20 @@ def run_queries():
 
     print("\n--- Query Results ---")
 
-    print("All books by author1:")
-    author1_books = Book.objects.filter(author1)
-    for book in author1:
-        print(f" - {book.title}")
-
     print("\n1. All books by Kithaka Wamberia:")
-    kithaka_wamberia_books = Book.objects.filter(author__name="Kithaka Wamberia)
+    kithaka_wamberia_books = Book.objects.filter(author__name="Kithaka Wamberia")
     for book in kithaka_wamberia_books:
         print(f"  - {book.title}")
 
-    print("List all books in Library:")
-    library = "Library.objects.get(name="library_name")"
-    for book in library.books.all():
-        print(f" -{book.title}")
+    print("\n1. All books by Margaret Ogot:")
+    margaret_ogot_books = Book.objects.filter(author__name="Margaret Ogot")
+    for book in margaret_ogot_books:
+        print(f"  - {book.title}")
+
+    print("\n2. All books in MacMillan Library:")
+    macmillan_library_obj = Library.objects.get(name="MacMillan Library")
+    for book in macmillan_library_obj.books.all():
+        print(f"  - {book.title}")
 
     print("\n2. All books in Upperhill KNLS Library:")
     upperhill_knls_library = Library.objects.get(name="Upperhill KNLS Library")
