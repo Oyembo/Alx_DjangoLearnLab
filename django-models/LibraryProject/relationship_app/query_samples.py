@@ -44,10 +44,20 @@ def run_queries():
 
     print("\n--- Query Results ---")
 
+    print("\n1. All books by author1:")
+    author1_books = Book.objects.filter(author1)
+    for book in author1:
+        print(f" - {book.title}")
+
     print("\n1. All books by Kithaka Wamberia:")
     kithaka_wamberia_books = Book.objects.filter(author__name="Kithaka Wamberia)
     for book in kithaka_wamberia_books:
         print(f"  - {book.title}")
+
+    print("\n2.List all books in Library:")
+    Library=Library.objects.get(name="library_name")
+    for book in library.books.all():
+        print(f" -{book.title}")
 
     print("\n2. All books in Upperhill KNLS Library:")
     upperhill_knls_library = Library.objects.get(name="Upperhill KNLS Library")
