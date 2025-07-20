@@ -5,6 +5,7 @@ from django.views.generic.detail import DetailView
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import logout
+from django.contrib.auth.decorators import permission_required
 
 # Create your views here.
 def is_admin(user):
@@ -76,6 +77,41 @@ def book_list(request):
     books = Book.objects.all()
     context = {'book_list': books}
     return render(request, relationship_app/list_books.html)
+
+class BookForm(ModelForm):
+    class Meta:
+        model = Book
+        fields = ['title', 'author', 'publication_date', 'isbn']
+
+@login_required
+@permission_required('relationship_app.can_add_book', raise_exception=True)
+class BookCreateView(CreateView):
+    model = Book
+    form_class = BookForm
+    template_name = 'relationship_app/book_form.html'
+    success_url = reverse_lazy('book_list')
+
+@login_required
+@permission_required('relationship_app.can_change_book', raise_exception=True)
+class BookUpdateView(UpdateView):
+    model = Book
+    form_class = BookForm
+    template_name = 'relationship_app/book_form.html'
+    success_url = reverse_lazy('book_list')
+
+@login_required
+@permission_required('relationship_app.can_delete_book', raise_exception=True)
+class BookDeleteView(DeleteView):
+    model = Book
+    template_name = 'relationship_app/book_confirm_delete.html'
+    success_url = reverse_lazy('book_list')
+
+def book_list(request):
+    """Retrieves all books and renders a template displaying the list"""
+    books = Book.objects.all()
+    context = {'book_list': books}
+    return render(request, 'relationship_app/list_books.html', context)
+
 
 class LibraryDetailView(DetailView):
     """A class-based view for displaying details of specific Library."""
