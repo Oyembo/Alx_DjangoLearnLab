@@ -9,8 +9,6 @@ from django.forms import ModelForm
 
 from .models import Book, Library, Author, Librarian, UserProfile, UserRole
 
-
-# Create your views here.
 def is_admin(user):
     if not user.is_authenticated:
         return False
@@ -40,6 +38,7 @@ def register_view(request):
         form = UserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
+            # UserProfile will be created automatically by the signal (in signals.py)
             login(request, user)
             return redirect('login_success')
     else:
@@ -48,10 +47,10 @@ def register_view(request):
 
 @login_required
 def login_success_view(request):
-    return render(request, 'relationship_app/login_success.html')
+    return render(request, 'relationship_app/login.html')
 
 def logged_out_view(request):
-    return render(request, 'relationship_app/logged_out.html')
+    return render(request, 'relationship_app/logout.html')
 
 @login_required
 @user_passes_test(is_admin, login_url='/auth/login/')
@@ -71,7 +70,7 @@ def member_view(request):
 class BookForm(ModelForm):
     class Meta:
         model = Book
-        fields = ['title', 'author', 'publication_date', 'isbn']
+        fields = ['title', 'author', 'publication_date']
 
 @login_required
 @permission_required('relationship_app.can_add_book', raise_exception=True)
