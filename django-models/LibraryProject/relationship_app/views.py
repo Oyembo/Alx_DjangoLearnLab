@@ -17,13 +17,30 @@ def register_view(request):
         form = UserCreationForm()
     return render(request, 'relationship_app/register.html', {'form': form})
 
-@login requires
+@login required
 def login_success_view(request):
     return render(request, 'relationship_app/login.html')
 
 def logout_view(request):
     return render(request, 'relationship_app/logout.html')
-    
+
+@login_required
+@user_passes_test(is_admin, login_url='/auth/login/') # Redirect to login if not admin
+def admin_view(request):
+    """View only accessible to users with the 'Admin' role."""
+    return render(request, 'relationship_app/admin_view.html')
+
+@login_required
+@user_passes_test(is_librarian, login_url='/auth/login/') # Redirect to login if not librarian
+def librarian_view(request):
+    """View only accessible to users with the 'Librarian' role."""
+    return render(request, 'relationship_app/librarian_view.html')
+
+@login_required
+@user_passes_test(is_member, login_url='/auth/login/') # Redirect to login if not member
+def member_view(request):
+    """View only accessible to users with the 'Member' role."""
+    return render(request, 'relationship_app/member_view.html')
 def book_list(request):
     """Retrieves all books and renders a template displaying the list"""
     books = Book.objects.all()
