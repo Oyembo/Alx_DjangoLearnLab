@@ -15,10 +15,10 @@ urlpatterns = [
     path('member_dashboard/', views.member_view, name='member_dashboard'),
 
     path('books/', views.book_list, name='book_list'),
-    path('books/add/', views.BookCreateView.as_view(), name='book_add'),
+    path('books/add_book/', views.BookCreateView.as_view(), name='book_add'),
     path('books/<int:pk>/', views.BookDetailView.as_view(), name='book_detail'),
-    path('books/<int:pk>/edit/', views.BookUpdateView.as_view(), name='book_edit'),
-    path('books/<int:pk>/delete/', views.BookDeleteView.as_view(), name='book_delete'),
+    path('books/<int:pk>/edit_book/', views.BookUpdateView.as_view(), name='book_edit'),
+    path('books/<int:pk>/delete_book/', views.BookDeleteView.as_view(), name='book_delete'),
 
     path('libraries/<int:pk>/', views.LibraryDetailView.as_view(), name='library_detail'),
 ]
