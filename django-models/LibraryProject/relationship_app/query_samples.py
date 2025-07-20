@@ -55,7 +55,7 @@ def run_queries():
         print(f"  - {book.title}")
 
     print("\n2. All books in MacMillan Library:")
-    macmillan_library_obj = Library.objects.get(name="MacMillan Library")
+    macmillan_library_obj = Library.objects.get(name=library_name)
     for book in macmillan_library_obj.books.all():
         print(f"  - {book.title}")
 
