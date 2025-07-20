@@ -6,7 +6,8 @@ from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import logout
 
-# Create your views here.def is_admin(user):
+# Create your views here.
+def is_admin(user):
     """Checks if the user has the 'Admin' role."""
     if not user.is_authenticated:
         return False
