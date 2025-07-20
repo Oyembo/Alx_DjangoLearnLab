@@ -6,7 +6,34 @@ from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import logout
 
-# Create your views here.
+# Create your views here.def is_admin(user):
+    """Checks if the user has the 'Admin' role."""
+    if not user.is_authenticated:
+        return False
+    try:
+        return user.profile.role == UserRole.ADMIN
+    except UserProfile.DoesNotExist:
+        return False
+
+def is_librarian(user):
+    """Checks if the user has the 'Librarian' role."""
+    if not user.is_authenticated:
+        return False
+    try:
+        return user.profile.role == UserRole.LIBRARIAN
+    except UserProfile.DoesNotExist:
+        return False
+
+def is_member(user):
+    """Checks if the user has the 'Member' role."""
+    if not user.is_authenticated:
+        return False
+    try:
+        return user.profile.role == UserRole.MEMBER
+    except UserProfile.DoesNotExist:
+        return False
+
+
 def register_view(request):
     if request.method == 'POST':
         FORM = UserCreationForm(request.POST)
@@ -26,21 +53,22 @@ def logout_view(request):
 
 @login_required
 @user_passes_test(is_admin, login_url='/auth/login/') # Redirect to login if not admin
-def admin_view(request):
+def Admin_view(request):
     """View only accessible to users with the 'Admin' role."""
     return render(request, 'relationship_app/admin_view.html')
 
 @login_required
 @user_passes_test(is_librarian, login_url='/auth/login/') # Redirect to login if not librarian
-def librarian_view(request):
+def Librarian_view(request):
     """View only accessible to users with the 'Librarian' role."""
     return render(request, 'relationship_app/librarian_view.html')
 
 @login_required
 @user_passes_test(is_member, login_url='/auth/login/') # Redirect to login if not member
-def member_view(request):
+def Member_view(request):
     """View only accessible to users with the 'Member' role."""
     return render(request, 'relationship_app/member_view.html')
+
 def book_list(request):
     """Retrieves all books and renders a template displaying the list"""
     books = Book.objects.all()
