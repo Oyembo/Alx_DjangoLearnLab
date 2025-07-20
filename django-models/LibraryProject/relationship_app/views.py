@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Library
 from models import Book
 from django.views.generic.detail import DetailView
@@ -7,6 +7,23 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import logout
 
 # Create your views here.
+def register_view(request):
+    if request.method == 'POST':
+        FORM = UserCreationForm(request.POST)
+        if form.is_valid()
+        user= form.save()
+        login(request, user)
+    else:
+        form = UserCreationForm()
+    return render(request, 'relationship_app/register.html', {'form': form})
+
+@login requires
+def login_success_view(request):
+    return render(request, 'relationship_app/login.html')
+
+def logout_view(request):
+    return render(request, 'relationship_app/logout.html')
+    
 def book_list(request):
     """Retrieves all books and renders a template displaying the list"""
     books = Book.objects.all()
