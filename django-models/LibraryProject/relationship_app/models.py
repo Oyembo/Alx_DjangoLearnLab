@@ -9,9 +9,9 @@ class UserRole(models.TextChoices):
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
-    role = models.CharField(max_length=50
-    choices = UserRole.choices
-    default = UserRole.ADMIN
+    role = models.CharField(max_length=50,
+    choices = UserRole.choices,
+    default = UserRole.ADMIN,
     )
     def __str__(self):
         return f"{self.user.username}'s Profile ({self.get_role_display()})"
@@ -26,6 +26,15 @@ class Book(models.Model):
     title = models.CharField(max_length=200)
     author = models.ForeignKey(Author, on_delete=models.CASCADE, related_name='books_by_author')
     publication_date = models.DateField(null=True, blank=True)
+    class Meta:
+        permissions = [
+            ("can_add_book", "Can add new books"),
+            ("can_change_book", "Can change existing books"),
+            ("can_delete_book", "Can delete books"),
+        ]
+
+    def __str__(self):
+        return f"{self.title} by {self.author.name}"
 
     def __str__(self):
         return f"{self.title} by {self.author.name}"
@@ -41,8 +50,6 @@ class Librarian(models.Model):
     name = models.CharField(max_length=50)
     library = models.OneToOneField(Library, on_delete=models.CASCADE, related_name = 'librarian_in_charge')
 
-    class Meta:
-        ordering = ['name', 'library']
     def __str__(self):
         return f'{self.name}, {self.library}'
 
