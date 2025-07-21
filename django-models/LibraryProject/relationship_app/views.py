@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import permission_required
 from .models import Library
 
 from django.views.generic import DetailView, CreateView, UpdateView, DeleteView
+from django.views.generic.detail import DetailView
 from django.forms import ModelForm
 
 from .models import Book, Library, Author, Librarian, UserProfile, UserRole
