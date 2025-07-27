@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import permission_required
 
 
+
 # Create your models here.
 class UserRole(models.TextChoices):
     ADMIN = 'admin', 'Admin'
