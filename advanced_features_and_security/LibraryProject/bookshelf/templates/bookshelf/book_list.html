@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book List</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; }
+        .container { max-width: 800px; margin: auto; padding: 20px; border: 1px solid #ccc; border-radius: 8px; }
+        h1 { color: #333; }
+        ul { list-style: none; padding: 0; }
+        li { background: #f9f9f9; margin-bottom: 10px; padding: 10px; border-radius: 5px; display: flex; justify-content: space-between; align-items: center; }
+        li strong { margin-right: 10px; }
+        .actions a { margin-left: 10px; text-decoration: none; color: #007bff; }
+        .actions a:hover { text-decoration: underline; }
+        .add-link { display: block; margin-top: 20px; padding: 10px 15px; background-color: #28a745; color: white; text-align: center; border-radius: 5px; text-decoration: none; width: fit-content; }
+        .add-link:hover { background-color: #218838; }
+        .error-message { color: red; margin-top: 15px; }
+        .user-info { margin-bottom: 20px; font-size: 0.9em; color: #555; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Book List</h1>
+        <p class="user-info">Logged in as: <strong>{{ user.email }}</strong> ({{ user.username }})</p>
+        <p class="user-info">User ID: <strong>{{ user.id }}</strong></p>
+
+        {% if user.is_authenticated %}
+            {% if user.has_perm('bookshelf.can_create') %}
+                <a href="{% url 'bookshelf:book_create' %}" class="add-link">Add New Book</a>
+            {% endif %}
+        {% else %}
+            <p>Please <a href="/admin/login/?next=/books/">log in</a> to manage books.</p>
+        {% endif %}
+
+        {% if books %}
+            <ul>
+                {% for book in books %}
+                    <li>
+                        <div>
+                            <strong>{{ book.title }}</strong> by {{ book.author }} (Added by: {{ book.added_by.email }})
+                            {% if book.description %}<br><small>{{ book.description|truncatechars:100 }}</small>{% endif %}
+                        </div>
+                        <div class="actions">
+                            {% if user.has_perm('bookshelf.can_edit') %}
+                                <a href="{% url 'bookshelf:book_edit' book.pk %}">Edit</a>
+                            {% endif %}
+                            {% if user.has_perm('bookshelf.can_delete') %}
+                                <a href="{% url 'bookshelf:book_delete' book.pk %}">Delete</a>
+                            {% endif %}
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No books available.</p>
+        {% endif %}
+
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        {% if not user.has_perm('bookshelf.can_view') %}
+            <p class="error-message">You do not have permission to view books.</p>
+        {% endif %}
+    </div>
+</body>
+</html>
