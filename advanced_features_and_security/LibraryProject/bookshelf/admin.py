@@ -1,9 +1,22 @@
 from django.contrib import admin
 from .models import Book, Author, Library, Librarian
+from .models import CustomUser
+from django.contrib.auth.admin import UserAdmin
 
 # Register your models here using the @admin.register decorator.
 # The explicit admin.site.register() calls are removed as they are redundant
 # when using the decorator, and cause the AlreadyRegistered error.
+admin.site.register(CustomUser, CustomUserAdmin)
+@admin.register(UserAdmin)
+class CustomUserAdmin(UserAdmin):
+    fieldsets = UserAdmin.fieldsets + (
+        (None, {'fields' : ('date_of_birth', 'profil_photo')}),
+    )
+    add_fieldsets = UserAdmin.add_fieldsets + (
+        (None, {'fields': ('date_of_birth', 'profile_photo')}),
+    )
+    list_display = ('email', 'username', 'date_of_birth')
+    ordering = ('email',)
 
 @admin.register(Author)
 class AuthorAdmin(admin.ModelAdmin):
