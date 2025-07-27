@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 
 # Create your models here.
-class CustomUser(AbstractBaseUser):
+class CustomUser(AbstractUser):
     date_of_birth = models.DateField
     profile_photo = models.ImageField
     #... additional fields and methods as required ...
