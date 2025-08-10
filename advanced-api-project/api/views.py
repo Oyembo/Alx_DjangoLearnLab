@@ -10,11 +10,16 @@ class BookListView(generics.ListAPIView):
     
     - Handles GET requests.
     - Allows read-only access for all users.
-    """
-    queryset = Book.objects.all()
-    serializer_class = BookSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
 
+    Filtering:
+    - Example: /api/books/?title=The Lord of the Rings
+    
+    Searching:
+    - Example: /api/books/?search=lord
+    
+    Ordering:
+    - Example: /api/books/?ordering=-title (descending)
+   """
 class BookDetailView(generics.RetrieveAPIView):
     """
     A generic view for retrieving a single book instance.
@@ -25,6 +30,9 @@ class BookDetailView(generics.RetrieveAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
+    filter_fields = ['title', 'author', 'publication_year']
+    search_fields = ['title', 'author__name']
+    ordering_fields = ['title', 'publication_year']
 
 class BookCreateView(generics.CreateAPIView):
     """
