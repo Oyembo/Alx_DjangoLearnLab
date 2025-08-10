@@ -1,6 +1,8 @@
 from rest_framework import serializers
 from .models import Author, Book
 from datetime import date
+from rest_framework import serializers
+from bookshelf.models import Author, Book
 
 class BookSerializer(serializers.ModelSerializer):
     """
@@ -29,3 +31,21 @@ class AuthorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Author
         fields = ['id', 'name', 'books']
+
+class AuthorSerializer(serializers.ModelSerializer):
+    """
+    Serializer for the Author model.
+    """
+    class Meta:
+        model = Author
+        fields = ['id', 'name']
+
+class BookSerializer(serializers.ModelSerializer):
+    """
+    Serializer for the Book model.
+    """
+    class Meta:
+        model = Book
+        fields = ['id', 'title', 'author']
+        # The author field here will be a primary key value.
+        # To display the author's name, you would use a nested serializer or StringRelatedField.
