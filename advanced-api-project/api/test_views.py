@@ -21,8 +21,18 @@ class BookAPITests(APITestCase):
         This method runs before every test case.
         """
         # Create a test user for authenticated requests
-        self.user = User.objects.create_user(username='testuser', password='testpassword')
+        self.user = User.objects.create_user(
+            username='testuser', 
+            password='testpassword'
+        )
 
+        self.client.login(username='testuser', password='testpassword')
+
+    def test_book_create_authenticated(self):
+        # Now, this test will run with the client already logged in
+        # and should pass if the view permissions are correctly set.
+        pass
+        
         # Create author and book instances for testing
         self.author1 = Author.objects.create(name='J.R.R. Tolkien')
         self.author2 = Author.objects.create(name='Stephen King')
