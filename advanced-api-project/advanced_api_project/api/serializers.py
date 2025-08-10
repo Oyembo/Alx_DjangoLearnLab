@@ -3,9 +3,7 @@ from .models import Author, Book
 from datetime import datetime
 
 class BookSerializer(serializers.ModelSerializer):
-    """
-    A serializer for the Book model, including custom validation.
-    """
+    """A serializer for the Book model, including custom validation."""
     class Meta:
         model = Book
         fields = ['id', 'title', 'publication_year', 'author']
